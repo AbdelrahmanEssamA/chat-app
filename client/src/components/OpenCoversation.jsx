@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
+import React, { useState, useCallback } from "react";
+import { Form, InputGroup } from "react-bootstrap";
 import { useConversations } from "../context/conversationsProvider";
 const OpenCoversation = () => {
   const [text, setText] = useState();
   const { sendMessage, selectedConversation } = useConversations();
+  const setRef = useCallback((node) => {
+    if (node) {
+      node.scrollIntoView({ smooth: true });
+    }
+  }, []);
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -13,35 +18,24 @@ const OpenCoversation = () => {
     );
     setText("");
   }
-  function handleKeyDown(e) {
-    e.preventDefault();
-
-    if (e.key === "Enter") {
-      sendMessage(
-        selectedConversation.recipients.map((r) => r.id),
-        text
-      );
-      setText("");
-    }
-  }
 
   return (
     <div className="d-flex flex-column flex-grow-1 mx-3 card bg-dprimary p-2 rounded elvation-5 ">
       <div className="flex-grow-1 overflow-auto   mb-2">
-        <div className="h-100 d-flex flex-column align-items-start justify-content-end px-3">
+        <div className="d-flex flex-column align-items-start justify-content-end px-3">
           {selectedConversation.messages.map((msg, index) => {
-            console.log(msg);
+            const lastMessage =
+              selectedConversation.messages.length - 1 === index;
             return (
               <div
+                ref={lastMessage ? setRef : null}
                 key={index}
                 className={`d-flex flex-colum py-2 ${
                   msg.fromMe ? "align-self-end" : ""
                 }`}
               >
                 <div
-                  className={`br px-2 py-1 ${
-                    msg.fromMe ? "bg-primary" : "border"
-                  }`}
+                  className={`br px-2 py-1 ${msg.fromMe ? "prim" : "border"}`}
                 >
                   {msg.text}
                 </div>

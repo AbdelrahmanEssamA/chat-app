@@ -8,7 +8,7 @@ const Coversations = () => {
       {conversations.map((conv, index) => (
         <ListGroup.Item
           className={`${
-            conv.selected ? "bg-primary rounded" : " bg-dprimary "
+            conv.selected ? "prim rounded" : " bg-dprimary "
           } text-light m-1`}
           key={index}
           action
